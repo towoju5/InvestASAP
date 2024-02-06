@@ -111,6 +111,11 @@ class Invest_Asap {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-invest-asap-i18n.php';
 
+		// core classes
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/core/class-manage-deposits.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/core/class-manage-payouts.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/core/class-manage-plans.php';
+
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */

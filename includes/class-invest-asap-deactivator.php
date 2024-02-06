@@ -46,6 +46,10 @@ class Invest_Asap_Deactivator
         // Withdrawals Table
         $table_name = $wpdb->prefix . 'woju_withdrawals';
         $wpdb->query("DROP TABLE IF EXISTS $table_name");
+
+        // Payment Methods Table
+        $table_name = $wpdb->prefix . 'woju_payment_methods';
+        $wpdb->query("DROP TABLE IF EXISTS $table_name");
     }
 
 }

@@ -54,11 +54,13 @@ class Invest_Asap_Activator
         $table_name = $wpdb->prefix . 'woju_deposits';
         $sql = "CREATE TABLE IF NOT EXISTS $table_name (
 				id INT(11) NOT NULL AUTO_INCREMENT,
+				user_id INT(11) NOT NULL,
 				payment_method VARCHAR(255) NOT NULL,
 				amount DECIMAL(10, 2) NOT NULL,
 				date DATETIME NOT NULL,
 				expiration DATETIME NOT NULL,
 				status VARCHAR(20) NOT NULL,
+				raw_data LONGTEXT NULL,
 				PRIMARY KEY (id)
 			) $charset_collate;";
         $wpdb->query($sql);
@@ -67,6 +69,8 @@ class Invest_Asap_Activator
         $table_name = $wpdb->prefix . 'woju_withdrawals';
         $sql = "CREATE TABLE IF NOT EXISTS $table_name (
 				id INT(11) NOT NULL AUTO_INCREMENT,
+				user_id INT(11) NOT NULL,
+				amount DECIMAL(10, 2) NOT NULL,
 				wallet_address VARCHAR(255) NOT NULL,
 				payment_method VARCHAR(255) NOT NULL,
 				status VARCHAR(20) NOT NULL,
@@ -74,6 +78,19 @@ class Invest_Asap_Activator
 				currency VARCHAR(10) NOT NULL,
 				PRIMARY KEY (id)
 			) $charset_collate;";
+        $wpdb->query($sql);
+
+        // Payment Methods Table
+        $table_name = $wpdb->prefix . 'woju_payment_methods';
+        $sql = "CREATE TABLE IF NOT EXISTS $table_name (
+			id INT(11) NOT NULL AUTO_INCREMENT,
+			method_name VARCHAR(255) NOT NULL,
+			method_slug VARCHAR(255) NOT NULL,
+			method_wallet_address VARCHAR(255) NOT NULL,
+			method_currency VARCHAR(10) NOT NULL,
+			method_network VARCHAR(255),
+			PRIMARY KEY (id)
+		) $charset_collate;";
         $wpdb->query($sql);
     }
 
