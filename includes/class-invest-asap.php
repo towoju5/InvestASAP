@@ -79,6 +79,7 @@ class Invest_Asap {
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
 
+		add_action( 'admin_enqueue_scripts', [$this, 'custom_enqueue_styles'] );
 	}
 
 	/**
@@ -179,6 +180,15 @@ class Invest_Asap {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
 	}
+
+	public function custom_enqueue_styles() {
+		// Plugin directory URL
+		$plugin_url = plugin_dir_url( __FILE__ );
+	
+		// Enqueue the stylesheet
+		wp_enqueue_style('tailwind-styles', $plugin_url. '../style.css', array(), time(), false);
+	}
+	
 
 	/**
 	 * Run the loader to execute all of the hooks with WordPress.

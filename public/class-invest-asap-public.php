@@ -74,6 +74,7 @@ class Invest_Asap_Public {
 		 */
 
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/invest-asap-public.css', array(), $this->version, 'all' );
+		wp_enqueue_style('tailwind-styles', plugin_dir_url(__FILE__) . 'style.css', array(), time(), false);
 
 	}
 

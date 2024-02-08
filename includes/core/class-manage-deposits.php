@@ -45,7 +45,7 @@ class Class_Manage_Deposits {
 
     /**
      * Get payout by ID from Custom Database Table
-     * @method get_currentuserinfo()
+     * @method wp_get_current_user()
      * @param int $user_id The ID of the payout.
      * @return array|object The payout data or null if not found.
      */

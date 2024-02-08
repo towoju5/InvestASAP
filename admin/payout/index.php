@@ -1,11 +1,6 @@
 <div class="bg-white p-8 rounded-md shadow-md mt-3">
     <div class="flex justify-between gap-3">
         <h2 class="text-2xl font-semibold mb-6">All Payouts</h2>
-        <a href="<?= site_url('wp-admin/admin.php?page=investment-payouts&action=create') ?>">
-            <button class="px-4 py-1 rounded-full text-white bg-blue-600">
-                Add New Payout
-            </button>
-        </a>
     </div>
     <div class="overflow-x-auto bg-white">
         <table class="min-w-full bg-white border border-gray-300">
@@ -25,17 +20,17 @@
                 <?php foreach($payouts as $k => $payout): ?>
                 <tr class="text-center">
                     <td class="py-2 px-4 border-b"><?= $k+1 ?></td>
-                    <td class="py-2 px-4 border-b"><?= $payout->payout_name ?></td>
+                    <td class="py-2 px-4 border-b"><?= ucfirst(get_username_by_id($payout->user_id)) ?></td>
                     <td class="py-2 px-4 border-b"><?= $payout->amount ?></td>
                     <td class="py-2 px-4 border-b"><?= $payout->wallet_address ?></td>
                     <td class="py-2 px-4 border-b"><?= $payout->payment_method ?></td>
                     <td class="py-2 px-4 border-b"><?= $payout->status ?></td>
                     <td class="py-2 px-4 border-b">
                         <div class="flex justify-center gap-2 md:gap-4">
-                            <a href="<?= site_url('wp-admin/admin.php?page=investment-payouts&action=edit&payout_id='.$payout->id) ?>">
+                            <a href="<?= site_url('wp-admin/admin.php?page=payouts&action=edit&payout_id='.$payout->id) ?>">
                                 <i class="dashicons-before dashicons-edit-page"></i>
                             </a>
-                            <a href="<?= site_url('wp-admin/admin.php?page=investment-payouts&action=delete&payout_id='.$payout->id) ?>">
+                            <a href="<?= site_url('wp-admin/admin.php?page=payouts&action=delete&payout_id='.$payout->id) ?>">
                             <i class="dashicons-before dashicons-trash"></i>
                             </a>
                         </div>

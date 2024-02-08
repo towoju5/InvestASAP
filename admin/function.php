@@ -100,7 +100,7 @@ function manage_deposits()
     global $request;
     $deposit = new Class_Manage_Deposits;
     
-    if(isset($request->action) && $request->action == 'create') {
+    if(isset($request->action) && $request->action == 'create' && $request->page == "deposits") {
         if($_POST) {
             $plan_data = [
                 "plan_name" => $request->plan_name,
@@ -111,12 +111,12 @@ function manage_deposits()
             ];
             
             if($deposit->add_new_deposit($plan_data)) {
-                $path = site_url('wp-admin/admin.php?page=investment-plans');
+                $path = site_url('wp-admin/admin.php?page=deposits');
                 woju_redirect($path); exit;
             }
         }
         include_once plugin_dir_path( __FILE__ ) . '../admin/plans/create.php';
-    } else if(isset($request->action) && $request->action == 'edit' && isset($request->plan_id)) {
+    } else if(isset($request->action) && $request->action == 'edit' && $request->page == 'deposits' && isset($request->deposit_id)) {
         $plan = $deposit->get_deposit_by_id($request->plan_id);
         if($_POST) {
             $plan_data = [
@@ -129,10 +129,10 @@ function manage_deposits()
             ];
             $deposit->edit_deposit($request->plan_id, $plan_data);
         }
-        include_once plugin_dir_path( __FILE__ ) . '../admin/plans/edit.php';
-    } else if(isset($request->action) && $request->action == 'delete' && isset($request->plan_id)) {
+        include_once plugin_dir_path( __FILE__ ) . '../admin/deposits/edit.php';
+    } else if(isset($request->action) && $request->action == 'delete' && $request->page == 'deposits' && isset($request->deposit_id)) {
         if($deposit->delete_deposit($request->plan_id)) {
-            woju_redirect( site_url('wp-admin/admin.php?page=investment-plans') ); exit;
+            woju_redirect( site_url('wp-admin/admin.php?page=deposits') ); exit;
         }
     } else {
         $deposits = $deposit->get_all_deposits();
@@ -146,39 +146,17 @@ function manage_payouts()
     global $request;
     $payout = new Class_Manage_Payouts;
     
-    if(isset($request->action) && $request->action == 'create') {
+    if(isset($request->action) && $request->action == 'edit' && $request->page == 'payouts' && isset($request->payout_id)) {
+        $result = $payout->get_payout_by_id($request->payout_id);
+        // echo json_encode($plan); exit;
         if($_POST) {
-            $plan_data = [
-                "plan_name" => $request->plan_name,
-                "min_amount" => $request->min_amount,
-                "max_amount" => $request->max_amount,
-                "profit" => $request->profit,
-                "duration" => $request->duration,
-            ];
-            
-            if($payout->add_new_payout($plan_data)) {
-                $path = site_url('wp-admin/admin.php?page=investment-plans');
-                woju_redirect($path); exit;
-            }
+            // update payout status
+            $payout->update_payout_status($request->payout_id, $request->status);
         }
-        include_once plugin_dir_path( __FILE__ ) . '../admin/plans/create.php';
-    } else if(isset($request->action) && $request->action == 'edit' && isset($request->plan_id)) {
-        $plan = $payout->get_payout_by_id($request->plan_id);
-        if($_POST) {
-            $plan_data = [
-                "plan_name" => $request->plan_name,
-                "min_amount" => $request->min_amount,
-                "max_amount" => $request->max_amount,
-                "profit" => $request->profit,
-                "duration" => $request->duration,
-                "description" => $request->description,
-            ];
-            $payout->edit_payout($request->plan_id, $plan_data);
-        }
-        include_once plugin_dir_path( __FILE__ ) . '../admin/plans/edit.php';
-    } else if(isset($request->action) && $request->action == 'delete' && isset($request->plan_id)) {
-        if($payout->delete_payout($request->plan_id)) {
-            woju_redirect( site_url('wp-admin/admin.php?page=investment-plans') ); exit;
+        include_once plugin_dir_path( __FILE__ ) . '../admin/payout/edit.php';
+    } else if(isset($request->action) && $request->action == 'delete' && $request->page == 'payouts' && isset($request->payout_id)) {
+        if($payout->delete_payout($request->payout_id)) {
+            woju_redirect( site_url('wp-admin/admin.php?page=payouts') ); exit;
         }
     } else {
         $payouts = $payout->get_all_payouts();

@@ -116,5 +116,5 @@ Markdown uses email style notation for blockquotes and I've been told:
 
 To add plan list on any page within your wordpress, kindly user the shortcode
 ```
-[/investAsap_plans]
+    [/investAsap_plans]
 ```

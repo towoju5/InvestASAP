@@ -1,11 +1,6 @@
 <div class="bg-white p-8 rounded-md shadow-md mt-3">
     <div class="flex justify-between gap-3">
         <h2 class="text-2xl font-semibold mb-6">All Deposits</h2>
-        <a href="<?= site_url('wp-admin/admin.php?page=investment-plans&action=create') ?>">
-            <button class="px-4 py-1 rounded-full text-white bg-blue-600">
-                Add New deposit
-            </button>
-        </a>
     </div>
     <div class="overflow-x-auto bg-white">
         <table class="min-w-full bg-white border border-gray-300">
@@ -32,10 +27,10 @@
                     <td class="py-2 px-4 border-b"><?= $deposit->expiration ?></td>
                     <td class="py-2 px-4 border-b">
                         <div class="flex justify-center gap-2 md:gap-4">
-                            <a href="<?= site_url('wp-admin/admin.php?page=investment-plans&action=edit&plan_id='.$deposit->id) ?>">
+                            <a href="<?= site_url('wp-admin/admin.php?page=deposits&action=edit&deposit_id='.$deposit->id) ?>">
                                 <i class="dashicons-before dashicons-edit-page"></i>
                             </a>
-                            <a href="<?= site_url('wp-admin/admin.php?page=investment-plans&action=delete&plan_id='.$deposit->id) ?>">
+                            <a href="<?= site_url('wp-admin/admin.php?page=payouts&action=delete&deposit_id='.$deposit->id) ?>">
                                 <i class="dashicons-before dashicons-eyes"></i>
                             </a>
                         </div>

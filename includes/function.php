@@ -133,7 +133,24 @@ function payouts()
 {
     global $request;
     $core_payouts = new Class_Manage_Payouts;
-    if (isset($request->PLANID)) {
+    if(isset($request->action) && $request->action == 'create') {
+        if(isset($_POST['new_withdrawal'])) {
+            $payout_data = [
+                "user_id"       =>  get_current_user_id(),
+                "amount"        =>  $request->amount,
+                "wallet_address"=>  $request->wallet_address,
+                "payment_method"=>  $request->payment_method,
+                "status"        =>  "pending",
+                "date"          =>  new DateTime('now'),
+                "currency"      =>  $request->payment_method,
+            ];
+            
+            if($core_payouts->add_new_payout($payout_data)) {
+                woju_redirect(site_url('wp-admin/admin.php?page=payout-history')); exit;
+            }
+        }
+        include_once plugin_dir_path(__FILE__) . '../public/payout/new.php';
+    } else if (isset($request->PLANID)) {
         $core_plan = new Class_Manage_Plans;
         $plan = $core_plan->get_plan_by_id($request->PLANID);
         if (!$plan) {
@@ -142,7 +159,7 @@ function payouts()
             // include_once plugin_dir_path(__FILE__) . '../public/payout/new.php';
         }
     } else {
-        $user = get_currentuserinfo();
+        $user = wp_get_current_user();
         if ($user) {
             $payouts = $core_payouts->get_payout_by_user_id($user->ID);
             include_once plugin_dir_path(__FILE__) . '../public/payout/index.php';
@@ -163,7 +180,7 @@ function deposits()
             // include_once plugin_dir_path(__FILE__) . '../public/deposit/new.php';
         }
     } else {
-        $user = get_currentuserinfo();
+        $user = wp_get_current_user();
         if ($user) {
             $deposits = $core_deposits->get_deposit_by_user_id($user->ID);
             include_once plugin_dir_path(__FILE__) . '../public/deposit/index.php';
@@ -173,6 +190,8 @@ function deposits()
 
 function investment_home()
 {
+    $balances = user_balance(wp_get_current_user());
+    echo json_encode($balances); exit;
     include_once plugin_dir_path(__FILE__) . '../public/index.php';
 }
 
@@ -197,6 +216,35 @@ if (!function_exists('get_username_by_id')) {
 if (!function_exists('woju_redirect')) {
     function woju_redirect($redirect)
     {
-        echo ("<script>location.href = '" . $redirect . "'</script>");exit;
+        echo ("<script>location.href = '" . $redirect . "'</script>"); exit;
+    }
+}
+
+if (!function_exists('user_balance')) {
+    function user_balance($current_user_id) {
+        $user_meta_data = get_user_meta($current_user_id);
+        $user_balance_meta = [];
+        if (!is_object($user_meta_data) && !is_array($user_meta_data)) {
+            return [];
+        }
+
+        foreach ($user_meta_data as $key => $value) {
+            if (strpos($key, '_balance') !== false) {
+                $user_balance_meta[$key] = $value;
+            }
+        }
+
+        if(empty($user_balance_meta)) {
+            // create wallet balance for user.
+            $core_wallets = new Class_Manage_Wallets;
+            $wallets = $core_wallets->get_wallet_by_id($current_user_id);
+            if(!empty($wallets)){
+                foreach ($wallets as $key => $wallet) {
+                    $user_balance_meta[] = $core_wallets->add_balance_meta_fields($current_user_id, $wallet->slug, 0);
+                    user_balance($current_user_id);
+                }
+            }
+        }
+        return $user_balance_meta;
     }
 }

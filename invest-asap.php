@@ -71,8 +71,6 @@ require plugin_dir_path(__FILE__) . 'admin/function.php';
 // user
 require plugin_dir_path(__FILE__) . 'includes/function.php';
 
-wp_enqueue_style('tailwind-styles', plugin_dir_url(__FILE__) . 'style.css', array(), time(), false);
-
 /**
  * Begins execution of the plugin.
  *

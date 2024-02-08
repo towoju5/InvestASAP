@@ -47,7 +47,7 @@ class Class_Manage_Payouts
 
     /**
      * Get payout by ID from Custom Database Table
-     * @method get_currentuserinfo()
+     * @method wp_get_current_user()
      * @param int $user_id The ID of the payout.
      * @return array|null The payout data or null if not found.
      */
@@ -79,7 +79,7 @@ class Class_Manage_Payouts
         $result = $wpdb->insert(
             $table_name,
             $payout_data,
-            array('%d', '%f', '%s', '%s', '%s')
+            array('%s', '%s', '%s', '%s', '%s', '%s', '%s')
         );
 
         if ($result !== false) {
@@ -109,6 +109,27 @@ class Class_Manage_Payouts
 
         return $result !== false;
     }
+
+    /**
+     * Edit payout in Custom Database Table
+     *
+     * @param int $payout_id The ID of the payout to edit.
+     * @param array $payout_data An associative array containing updated payout data.
+     * @return bool Whether the payout was successfully updated or not.
+     */
+    function update_payout_status($payout_id, $status)
+    {
+        global $wpdb;
+        $table_name = $wpdb->prefix . $this->_table_name;
+    
+        $result = $wpdb->update(
+            $table_name,
+            array('status' => $status),
+            array('id' => $payout_id)
+        );
+        return $result !== false;
+    }
+    
 
     /**
      * Delete payout from Custom Database Table
